@@ -13,7 +13,7 @@ readonly REALPATH_SCRIPT="$SCRIPTS_DIR/realpath.sh"
 readonly CONSTS_SCRIPT="$SCRIPTS_DIR/constants.sh"
 readonly COMMON_SCRIPT="$SCRIPTS_DIR/common.sh"
 readonly TMP_WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}"/android_vendor_setup.XXXXXX) || exit 1
-declare -a SYS_TOOLS=("cp" "sed" "zipinfo" "jarsigner" "awk" "shasum")
+declare -a SYS_TOOLS=("cp" "sed" "zipinfo" "jarsigner" "awk" "sha1sum" "sha256sum")
 
 # Standalone symlinks. Need to also take care standalone firmware bin
 # symlinks between /data/misc & /system/etc/firmware.
@@ -358,21 +358,22 @@ update_dev_vendor_mk() {
 }
 
 gen_board_vendor_mk() {
-  {
-    echo 'LOCAL_PATH := $(call my-dir)'
-    echo ""
-    echo "\$(call add-radio-file,radio/bootloader.img,version-bootloader)"
-    if [[ "$RADIO_VER" != "" ]]; then
-      echo "\$(call add-radio-file,radio/radio.img,version-baseband)"
-    fi
+  echo 'LOCAL_PATH := $(call my-dir)' >> "$ANDROID_BOARD_VENDOR_MK"
+  #{
+  #  echo 'LOCAL_PATH := $(call my-dir)'
+  #  echo ""
+  #  echo "\$(call add-radio-file,radio/bootloader.img,version-bootloader)"
+  #  if [[ "$RADIO_VER" != "" ]]; then
+  #    echo "\$(call add-radio-file,radio/radio.img,version-baseband)"
+  #  fi
 
-    if [[ "$VENDOR" == "google" && "$EXTRA_IMGS_LIST" != "" ]]; then
-      for img in "${EXTRA_IMGS[@]}"
-      do
-        echo "\$(call add-radio-file,radio/$img.img)"
-      done
-    fi
-  } >> "$ANDROID_BOARD_VENDOR_MK"
+  #  if [[ "$VENDOR" == "google" && "$EXTRA_IMGS_LIST" != "" ]]; then
+  #    for img in "${EXTRA_IMGS[@]}"
+  #    do
+  #      echo "\$(call add-radio-file,radio/$img.img)"
+  #    done
+  #  fi
+  #} >> "$ANDROID_BOARD_VENDOR_MK"
 }
 
 gen_board_cfg_mk() {
@@ -414,8 +415,6 @@ gen_board_family_cfg_mk() {
   fi
 
   {
-    echo "# [$EXEC_DATE] Auto-generated file, do not edit"
-    echo ""
     echo "ifneq (\$(filter $minorTarget,\$(TARGET_DEVICE)),)"
     echo "  LOCAL_STEM := $minorTarget/BoardConfigVendorPartial.mk"
     echo "else"
@@ -1008,7 +1007,7 @@ gen_sigs_file() {
 
   find "$inDir"/vendor* -type f ! -name "file_signatures.txt" | sort | while read -r file
   do
-    shasum -a1 "$file" | sed "s#$inDir/##" >> "$sigsFile"
+    sha1sum "$file" | sed "s#$inDir/##" >> "$sigsFile"
   done
 }
 
@@ -1188,10 +1187,10 @@ initConfig "$ANDROID_BOARD_VENDOR_MK"
 initConfig "$ANDROID_MK"
 
 # And prefix them
-find "$OUTPUT_DIR/vendor/$VENDOR_DIR" -type f -name '*.mk' | while read -r file
-do
-  echo -e "# [$EXEC_DATE] Auto-generated file, do not edit\n" > "$file"
-done
+#find "$OUTPUT_DIR/vendor/$VENDOR_DIR" -type f -name '*.mk' | while read -r file
+#do
+#  echo -e "# [$EXEC_DATE] Auto-generated file, do not edit\n" > "$file"
+#done
 
 # Update from DSO_MODULES array from DEP_DSO_BLOBS_LIST
 if [[ "$DEP_DSO_BLOBS_LIST" != "" ]]; then
@@ -1200,8 +1199,8 @@ if [[ "$DEP_DSO_BLOBS_LIST" != "" ]]; then
 fi
 
 # Copy radio images
-echo "[*] Copying radio files '$OUTPUT_VENDOR'"
-copy_radio_files "$INPUT_DIR" "$OUTPUT_VENDOR"
+#echo "[*] Copying radio files '$OUTPUT_VENDOR'"
+#copy_radio_files "$INPUT_DIR" "$OUTPUT_VENDOR"
 
 # Generate $DEVICE-vendor-blobs.mk makefile (plain files that don't require a target module)
 # Will be updated later
@@ -1274,8 +1273,8 @@ if [[ "$VENDOR" == "google" ]]; then
 fi
 
 # Generate file signatures list
-echo "[*] Generating signatures file"
-gen_sigs_file "$OUTPUT_DIR" "$OUTPUT_VENDOR/file_signatures.txt"
+#echo "[*] Generating signatures file"
+#gen_sigs_file "$OUTPUT_DIR" "$OUTPUT_VENDOR/file_signatures.txt"
 
 # Can be used from AOSP build infrastructure to verify that build is performed
 # against a matching factory images vendor blobs extract

@@ -75,6 +75,10 @@ declare -ra VENDOR_SKIP_FILES=(
   "overlay/DisplayCutoutNoCutout/NoCutoutOverlay.apk"
   "overlay/framework-res__auto_generated_rro.apk"
   "overlay/SysuiDarkTheme/SysuiDarkThemeOverlay.apk"
+  "lib64/hw/lights.sailfish.so"
+  "lib64/hw/lights.marlin.so"
+  "lib/hw/lights.sailfish.so"
+  "lib/hw/lights.marlin.so"
 )
 
 # Files to skip from vendor partition when parsing factory images (for naked config only)
