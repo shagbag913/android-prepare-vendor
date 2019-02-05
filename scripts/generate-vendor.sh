@@ -163,8 +163,8 @@ copy_radio_files() {
 extract_blobs() {
   local blobsList="$1"
   local inDir="$2"
-  local outDir_prop="$3/proprietary"
   local outDir_vendor="$3/vendor"
+  outDir_prop="$3/proprietary"
 
   local src="" dst="" dstDir="" outBase="" outPath="" openTag=""
 
@@ -1207,6 +1207,10 @@ fi
 echo "[*] Copying product files & generating '$DEVICE-vendor-blobs.mk' makefile"
 extract_blobs "$BLOBS_LIST" "$INPUT_DIR" "$OUTPUT_VENDOR"
 update_vendor_blobs_mk "$BLOBS_LIST"
+
+# dont disable MVS, CarrierConfig doesn't properly enable it
+VERMIPS='<disabled-until-used-preinstalled-carrier-app package="com.verizon.mips.services" />'
+sed -i 's%'"$VERMIPS"'%<!-- '"$VERMIPS"' -->%' $outDir_prop/etc/sysconfig/nexus.xml
 
 # Generate device-vendor.mk makefile (will be updated later)
 echo "[*] Generating '$(basename "$DEVICE_VENDOR_MK")'"

@@ -489,6 +489,7 @@
         "system/etc/cne/Nexus/VZW/VZW_profiles.xml",
         "system/etc/old-apns-conf.xml",
         "system/etc/permissions/privapp-permissions-marlin.xml:system/etc/permissions/privapp-permissions-apv.xml:google",
+        "system/etc/sysconfig/nexus.xml",
         "system/lib64/libaptX_encoder.so",
         "system/lib64/libaptXHD_encoder.so",
         "system/lib64/lib-imsvideocodec.so",
