@@ -1006,7 +1006,7 @@ initConfig() {
 }
 
 printLicense() {
-echo "# Copyright (C) 2019 BootleggersROM
+echo "# Copyright (C) $(date +%Y) BootleggersROM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
