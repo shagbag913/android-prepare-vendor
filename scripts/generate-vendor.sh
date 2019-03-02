@@ -62,8 +62,7 @@ _EOF
 }
 
 verify_input() {
-  if [[ ! -d "$1/vendor" || ! -d "$1/system" || ! -d "$1/radio" || \
-        ! -f "$1/system/build.prop" ]]; then
+  if [[ ! -d "$1/vendor" || ! -d "$1/system" || ! -f "$1/system/build.prop" ]]; then
     echo "[-] Invalid input directory structure"
   fi
 }
