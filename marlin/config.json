@@ -482,7 +482,7 @@
   },
   "api-28": {
     "naked": {
-      "overlays-dir": "overlays-api26-naked",
+      "overlays-dir": "",
       "system-bytecode": [
         "system/app/ims/ims.apk",
         "system/framework/LowPowerMonitorDeviceStub.jar",
@@ -541,7 +541,7 @@
       ]
     },
     "full": {
-      "overlays-dir": "overlays-api26-full",
+      "overlays-dir": "",
       "system-bytecode": [
         "system/app/VZWAPNLib/VZWAPNLib.apk",
         "system/framework/com.google.android.camera.experimental2016.jar",
