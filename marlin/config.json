@@ -3,7 +3,7 @@
   "device-model": "marlin",
   "device-aliases": [],
   "vendor": "google",
-  "aosp-vendor-dir": "google_devices",
+  "aosp-vendor-dir": "google",
   "device-family": "marlin",
   "supported-apis": ["api-25", "api-26", "api-27", "api-28"],
   "extra-partitions": [
